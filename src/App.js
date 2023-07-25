@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import TodoList from './todoList';
 
-function App() {
+const App = () => {
+
+  const [itemsList, newitemList] = useState();
+  const [items, newItems] = useState([]);
+
+
+  const listItems =()=>{
+    newItems((oldVal)=>{
+      return [...oldVal,itemsList]
+    })
+    newitemList('')
+  }
+
+  const deleteItem =(id)=>{
+    console.log('delete')
+
+    newItems((oldVal)=>{
+      return oldVal.filter((arrlem,index)=>{
+        return index !==id;
+      })
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <div className="todo">
+
+        <div className="main">
+
+          <div className="center">
+            <h1>TODO APP</h1>
+            <div className="inner_section">
+              <input type="text" value={itemsList} placeholder='Enter your data' onChange={e=>{newitemList(e.target.value)}} />
+              <button onClick={listItems}>+</button>
+            </div>
+
+            <div className="todolist">
+              <ul>
+                {/* <li>{itemsList}</li> */}
+
+                { items.map((itemVal,index)=>{
+                  return  <TodoList text={itemVal}
+                  onSelect={deleteItem} 
+                    key={index}
+                    id={index}
+                  />
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </>
+  )
 }
 
-export default App;
+export default App
